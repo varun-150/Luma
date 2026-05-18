@@ -1,0 +1,11 @@
+{
+  "name": "Æther Learning",
+  "description": "A world-class immersive learning platform focused on cognitive clarity and intelligent progress.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
