@@ -1,12 +1,35 @@
+# Render Deployment Configuration for LUMA (Æther Learning Sanctuary)
+# Blueprints: https://render.com/docs/yaml-spec
+
 services:
   - type: web
     name: luma-student-app
     env: node
     plan: free
-    buildCommand: npm install && npm run build
+    
+    # Use 'npm ci' for deterministic, faster, and reliable CI builds
+    buildCommand: npm ci && npm run build
+    
+    # Start the bundled Express server
     startCommand: npm run start
+    
+    # Zero-downtime rolling deploys: Render will only route traffic to the new instance 
+    # when this health check endpoint returns 200 OK
+    healthCheckPath: /api/health
+    
     envVars:
+      # Pinned to Node 20 LTS to avoid engine conflicts with Vite 6 / React 19 / ESBuild
+      - key: NODE_VERSION
+        value: "20.x"
+        
       - key: NODE_ENV
         value: production
+        
       - key: PORT
         value: "3000"
+        
+      # Required for server-side Gemini AI features.
+      # Setting sync to false tells Render not to overwrite this variable when updating the stack,
+      # and prompts the user to provide their key securely in the Render UI during initial deploy.
+      - key: GEMINI_API_KEY
+        sync: false
