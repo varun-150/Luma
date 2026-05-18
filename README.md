@@ -6,6 +6,15 @@
 
 ---
 
+## 🎯 Case Study & Educational Purpose
+
+This application is built specifically as an **interactive, high-fidelity UX Case Study presentation**. Its primary purpose is to showcase advanced UI/UX refinements, cognitive psychology principles, and premium visual engineering in modern web systems:
+*   **Aesthetic Masterclass**: Serves as a live showcase of meticulous art-direction, balancing clean modular light themes with deep, immersive dark-themed workspaces.
+*   **Visual Psychology Demonstrations**: Features interactive presentation slides where users can toggle clutter, overlay Gestalt 8px alignment grids, inspect accessibility-grade typography hierarchies, and test calm vs. stress-inducing game mechanics.
+*   **Technical Reference**: Serves as a production-grade template demonstrating Tailwind CSS v4 variables, Framer Motion animations, and flawless Vite packaging workflows.
+
+---
+
 ## 💎 Design Philosophy & Visual Engineering
 
 **LUMA** is a premium, static educational presentation designed to alleviate cognitive friction and academic anxiety. Built on human-centered design best practices, LUMA provides a minimal, distraction-free environment that guides students' focus toward deep concept retention.
