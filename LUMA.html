@@ -1,0 +1,3105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUMA — sanctuary of learning | UX/UI Case Study</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="A premium, next-generation UX/UI Case Study for LUMA, a student learning sanctuary designed by Akuri Venkata Surya Varun to eliminate learning fatigue and cognitive overload through minimal editorial design.">
+    <meta name="author" content="Akuri Venkata Surya Varun">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Colors */
+            --bg-pure: #ffffff;
+            --bg-soft: #f8f9fa;
+            --bg-card: #ffffff;
+            --border-light: rgba(0, 0, 0, 0.06);
+            --border-med: rgba(0, 0, 0, 0.12);
+            --text-title: #000000;
+            --text-body: #404040;
+            --text-muted: #737373;
+            --accent-graphite: #262626;
+            --accent-silver: #a3a3a3;
+            --accent-titanium: #525252;
+            --accent-blue-gray: #475569;
+            --accent-blue-gray-light: #f1f5f9;
+            
+            /* Dark Mode Variables (Specifically for Video Learning screen) */
+            --dark-bg: #0b0b0c;
+            --dark-card: #121214;
+            --dark-border: rgba(255, 255, 255, 0.08);
+            --dark-text: #f3f4f6;
+            --dark-muted: #9ca3af;
+            
+            /* Design Specs */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 12px 30px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 30px 60px rgba(0, 0, 0, 0.09);
+            --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-slow: all 0.8s var(--ease-cinematic);
+            --transition-med: all 0.4s var(--ease-cinematic);
+            --transition-fast: all 0.2s var(--ease-cinematic);
+        }
+
+        /* ── Reset ── */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+            background: var(--bg-pure);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-pure);
+            color: var(--text-body);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* ── Scroll Animations (Framer-inspired) ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: var(--transition-slow);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+
+        /* ── Navigation ── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 0 4vw;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s, background 0.3s;
+        }
+
+        nav.scrolled {
+            border-bottom: 1px solid var(--border-light);
+            background: rgba(255, 255, 255, 0.92);
+        }
+
+        .nav-logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 19px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--text-title);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-logo::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-title);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-size: 13.5px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: var(--transition-fast);
+        }
+
+        .nav-links a:hover {
+            color: var(--text-title);
+        }
+
+        .nav-pill {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border: 1px solid var(--border-med);
+            border-radius: 100px;
+            text-decoration: none;
+            transition: var(--transition-fast);
+        }
+
+        .nav-pill:hover {
+            background: var(--text-title);
+            color: var(--bg-pure);
+            border-color: var(--text-title);
+        }
+
+        /* ── Scroll Progress Indicator ── */
+        .progress-bar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            z-index: 1001;
+            background: transparent;
+            pointer-events: none;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--accent-graphite);
+            transition: width 0.1s linear;
+        }
+
+        /* ── Hero Section ── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 0 4vw 80px;
+            position: relative;
+            background: var(--bg-pure);
+            overflow: hidden;
+        }
+
+        .hero-noise {
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.015'/%3E%3C/svg%3E");
+            background-size: 180px;
+            pointer-events: none;
+            opacity: 0.75;
+        }
+
+        .hero-container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: var(--bg-soft);
+            border: 1px solid var(--border-light);
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--accent-titanium);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+            opacity: 0;
+            animation: slideUpFade 1.2s var(--ease-cinematic) 0.2s forwards;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--accent-blue-gray);
+            border-radius: 50%;
+        }
+
+        .hero-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(48px, 8.5vw, 110px);
+            font-weight: 900;
+            line-height: 0.92;
+            letter-spacing: -0.04em;
+            color: var(--text-title);
+            max-width: 1100px;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: slideUpFade 1.3s var(--ease-cinematic) 0.35s forwards;
+        }
+
+        .hero-title span {
+            font-weight: 500;
+            color: var(--accent-silver);
+            display: block;
+        }
+
+        .hero-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-top: 1px solid var(--border-med);
+            padding-top: 48px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+            gap: 32px;
+            opacity: 0;
+            animation: slideUpFade 1.4s var(--ease-cinematic) 0.5s forwards;
+        }
+
+        .hero-desc {
+            font-size: clamp(16px, 1.4vw, 20px);
+            color: var(--text-body);
+            font-weight: 300;
+            max-width: 460px;
+            line-height: 1.7;
+            letter-spacing: -0.01em;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 48px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-num {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(28px, 3.5vw, 44px);
+            font-weight: 700;
+            color: var(--text-title);
+            line-height: 1;
+            letter-spacing: -0.03em;
+        }
+
+        .stat-lbl {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-top: 8px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        /* ── Scroll Cue ── */
+        .scroll-cue {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            animation: fadeIn 1.5s var(--ease-cinematic) 1.2s forwards;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--text-title) 50%, transparent 50%);
+            background-size: 100% 200%;
+            background-position: 100% 0%;
+            animation: scrollLineAnimation 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+        }
+
+        .scroll-lbl {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        /* Keyframes */
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(40px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 0.7; }
+        }
+
+        @keyframes scrollLineAnimation {
+            0% { background-position: 100% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 100% 200%; }
+        }
+
+        /* ── Grid/Layout Base ── */
+        section {
+            padding: clamp(80px, 12vw, 160px) 4vw;
+            border-bottom: 1px solid var(--border-light);
+            background: var(--bg-pure);
+        }
+
+        .section-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .section-tag {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            display: inline-block;
+        }
+
+        /* ── Problem Section ── */
+        .problem {
+            background: var(--bg-soft);
+        }
+
+        .editorial-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 1.8fr;
+            gap: 8vw;
+            align-items: start;
+        }
+
+        .section-h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(36px, 4.5vw, 62px);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            color: var(--text-title);
+        }
+
+        .section-h2 span {
+            color: var(--accent-silver);
+            font-weight: 400;
+        }
+
+        .problem-right {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .editorial-lead {
+            font-size: clamp(18px, 1.6vw, 24px);
+            font-weight: 300;
+            color: var(--text-title);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .editorial-body {
+            font-size: 15.5px;
+            color: var(--text-body);
+            font-weight: 400;
+            line-height: 1.8;
+        }
+
+        .editorial-body p + p {
+            margin-top: 24px;
+        }
+
+        .bullets-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-top: 40px;
+        }
+
+        .bullet-card {
+            padding: 32px;
+            background: var(--bg-pure);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            transition: var(--transition-med);
+        }
+
+        .bullet-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-sm);
+            border-color: var(--border-med);
+        }
+
+        .bullet-num {
+            font-family: 'Outfit', sans-serif;
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--accent-silver);
+            line-height: 1;
+            margin-bottom: 16px;
+        }
+
+        .bullet-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-title);
+            margin-bottom: 8px;
+        }
+
+        .bullet-desc {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ── Research Insights Section ── */
+        .research-summary {
+            margin-top: 80px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            border-top: 1px solid var(--border-med);
+            padding-top: 60px;
+        }
+
+        .insight-stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .insight-num {
+            font-family: 'Outfit', sans-serif;
+            font-size: 64px;
+            font-weight: 900;
+            color: var(--text-title);
+            letter-spacing: -0.04em;
+            line-height: 1;
+        }
+
+        .insight-lbl {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin: 16px 0 8px;
+        }
+
+        .insight-desc {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ── Quotes Slider ── */
+        .quote-slider {
+            margin-top: 80px;
+            background: var(--bg-pure);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 60px 80px;
+            text-align: center;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+        }
+
+        .quote-icon {
+            font-size: 60px;
+            font-family: Georgia, serif;
+            line-height: 1;
+            color: var(--border-med);
+            display: block;
+            margin-bottom: 24px;
+        }
+
+        .quote-text {
+            font-size: clamp(18px, 2vw, 26px);
+            font-weight: 300;
+            font-style: italic;
+            color: var(--text-title);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .quote-author {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent-blue-gray);
+        }
+
+        /* ── Target Users & Goals ── */
+        .targets {
+            background: var(--bg-pure);
+        }
+
+        .targets-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 60px;
+        }
+
+        .target-card {
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: 40px 32px;
+            transition: var(--transition-med);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 280px;
+        }
+
+        .target-card:hover {
+            border-color: var(--text-title);
+        }
+
+        .target-role {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent-silver);
+            margin-bottom: 24px;
+            display: block;
+        }
+
+        .target-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-title);
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .target-desc {
+            font-size: 14px;
+            color: var(--text-body);
+            line-height: 1.7;
+        }
+
+        /* ── Design System Showcase ── */
+        .design-sys {
+            background: var(--bg-soft);
+        }
+
+        .ds-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8vw;
+            margin-top: 60px;
+            align-items: flex-start;
+        }
+
+        .ds-left h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-title);
+            margin-bottom: 20px;
+        }
+
+        .ds-palette {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+
+        .ds-swatch {
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+            text-align: center;
+            background: var(--bg-pure);
+            transition: var(--transition-med);
+        }
+
+        .ds-swatch:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .ds-color {
+            height: 80px;
+            width: 100%;
+        }
+
+        .ds-color-lbl {
+            padding: 12px 6px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .ds-color-lbl span {
+            display: block;
+            font-size: 9px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .ds-typo-item {
+            margin-bottom: 32px;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 24px;
+        }
+
+        .ds-typo-item:last-child {
+            border-bottom: none;
+        }
+
+        .ds-typo-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .ds-typo-preview-h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 40px;
+            font-weight: 900;
+            color: var(--text-title);
+            line-height: 0.95;
+            letter-spacing: -0.04em;
+        }
+
+        .ds-typo-preview-body {
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            color: var(--text-body);
+            line-height: 1.7;
+        }
+
+        /* ── Spacing showcase ── */
+        .ds-spacing {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .ds-space-row {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .ds-space-bar {
+            height: 12px;
+            background: var(--accent-graphite);
+            border-radius: 4px;
+        }
+
+        .ds-space-lbl {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-title);
+            min-width: 80px;
+        }
+
+        /* ── UI Showcase Simulator (Premium Masterpiece) ── */
+        .showcase {
+            background: var(--bg-pure);
+        }
+
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
+            margin-top: 60px;
+            align-items: flex-start;
+        }
+
+        .showcase-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: sticky;
+            top: 112px;
+            z-index: 10;
+        }
+
+        .menu-btn {
+            background: none;
+            border: 1px solid transparent;
+            text-align: left;
+            padding: 16px 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13.5px;
+            font-weight: 500;
+            color: var(--text-muted);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .menu-btn:hover {
+            color: var(--text-title);
+            background: var(--bg-soft);
+        }
+
+        .menu-btn.active {
+            color: var(--text-title);
+            background: var(--bg-soft);
+            border-color: var(--border-light);
+            font-weight: 600;
+        }
+
+        .menu-btn .menu-idx {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--accent-silver);
+            margin-right: 12px;
+        }
+
+        /* Simulated Screen Viewport */
+        .screen-container {
+            background: var(--bg-soft);
+            border: 1px solid var(--border-med);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            min-height: 600px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: var(--transition-med);
+        }
+
+        .screen-container:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Content panels switcher */
+        .screen-panel {
+            display: none;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.4s var(--ease-cinematic), transform 0.4s var(--ease-cinematic);
+            width: 100%;
+        }
+
+        .screen-panel.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .screen-header-meta {
+            margin-bottom: 28px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .screen-headline {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent-titanium);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .screen-subline {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 300;
+            max-width: 500px;
+            text-align: right;
+        }
+
+        /* ── Frame Mockups Inner Structure ── */
+        .device-mockup {
+            width: 100%;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--border-med);
+            background: var(--bg-pure);
+            box-shadow: var(--shadow-md);
+            aspect-ratio: 16/10;
+            display: flex;
+            position: relative;
+        }
+
+        /* Device dark mode modification */
+        .device-mockup.dark {
+            background: var(--dark-bg);
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        /* ── MOCKUP ELEMENTS ── */
+        .app-sidebar {
+            width: 200px;
+            border-right: 1px solid var(--border-light);
+            background: var(--bg-soft);
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            flex-shrink: 0;
+        }
+
+        .device-mockup.dark .app-sidebar {
+            background: var(--dark-bg);
+            border-right-color: var(--dark-border);
+        }
+
+        .app-logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-title);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .device-mockup.dark .app-logo {
+            color: var(--dark-text);
+        }
+
+        .app-logo::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-blue-gray);
+        }
+
+        .app-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .app-nav-item {
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .device-mockup.dark .app-nav-item {
+            color: var(--dark-muted);
+        }
+
+        .app-nav-item.active {
+            background: rgba(0, 0, 0, 0.04);
+            color: var(--text-title);
+            font-weight: 600;
+        }
+
+        .device-mockup.dark .app-nav-item.active {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--dark-text);
+        }
+
+        .app-main {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        /* 1. Auth Page Layout */
+        .auth-layout {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        .auth-visual {
+            flex: 1;
+            background: var(--bg-soft);
+            border-right: 1px solid var(--border-light);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .auth-visual-tag {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .auth-visual-h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-title);
+            line-height: 1.2;
+        }
+
+        .auth-form-side {
+            width: 320px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .auth-input-group {
+            margin-bottom: 16px;
+        }
+
+        .auth-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .auth-input {
+            width: 100%;
+            height: 38px;
+            border: 1px solid var(--border-med);
+            border-radius: var(--radius-sm);
+            padding: 0 12px;
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+            transition: var(--transition-fast);
+        }
+
+        .auth-input:focus {
+            border-color: var(--text-title);
+        }
+
+        .auth-btn {
+            width: 100%;
+            height: 38px;
+            background: var(--text-title);
+            color: var(--bg-pure);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: var(--transition-fast);
+        }
+
+        .auth-btn:hover {
+            opacity: 0.9;
+        }
+
+        .auth-divider {
+            text-align: center;
+            font-size: 10px;
+            color: var(--accent-silver);
+            margin: 16px 0;
+            position: relative;
+        }
+
+        .auth-oauth-btns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .oauth-btn {
+            height: 34px;
+            border: 1px solid var(--border-med);
+            border-radius: var(--radius-sm);
+            background: var(--bg-pure);
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        /* 2. Home Dashboard (With Live Pomodoro Widget) */
+        .dash-greeting {
+            font-family: 'Outfit', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-title);
+            margin-bottom: 4px;
+        }
+
+        .dash-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .dash-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .pomo-widget {
+            border: 1px solid var(--border-med);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            background: var(--bg-soft);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .pomo-title {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .pomo-timer {
+            font-family: 'Outfit', sans-serif;
+            font-size: 40px;
+            font-weight: 900;
+            color: var(--text-title);
+            line-height: 1;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .pomo-controls {
+            display: flex;
+            gap: 12px;
+        }
+
+        .pomo-btn {
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid var(--border-med);
+            background: var(--bg-pure);
+            transition: var(--transition-fast);
+        }
+
+        .pomo-btn.primary {
+            background: var(--text-title);
+            color: var(--bg-pure);
+            border-color: var(--text-title);
+        }
+
+        /* Dashboard Goals Checklist Widget */
+        .dash-card {
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            background: var(--bg-pure);
+        }
+
+        .card-header-sm {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 12.5px;
+            cursor: pointer;
+        }
+
+        .checklist-item input {
+            cursor: pointer;
+        }
+
+        .checklist-item.done span {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        /* 3. Explore View */
+        .explore-banner {
+            background: var(--bg-soft);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+            border: 1px solid var(--border-light);
+        }
+
+        .explore-banner h4 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-title);
+        }
+
+        .explore-filters {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-chip {
+            padding: 6px 14px;
+            border-radius: 100px;
+            border: 1px solid var(--border-light);
+            background: var(--bg-pure);
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .filter-chip.active {
+            background: var(--text-title);
+            color: var(--bg-pure);
+            border-color: var(--text-title);
+        }
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .course-card {
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            transition: var(--transition-med);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .course-card:hover {
+            border-color: var(--text-title);
+        }
+
+        .course-meta {
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--accent-silver);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+        }
+
+        .course-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--text-title);
+            line-height: 1.3;
+            margin-bottom: 8px;
+        }
+
+        .course-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* 4. Video Learning View (Dark mode) */
+        .video-player-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+        }
+
+        .video-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-right: 1px solid var(--dark-border);
+        }
+
+        .video-box {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--dark-border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-center-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            z-index: 2;
+        }
+
+        .play-ring {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .play-ring:hover {
+            transform: scale(1.08);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .play-ring svg {
+            width: 14px;
+            height: 14px;
+            fill: #fff;
+            margin-left: 2px;
+        }
+
+        .video-duration-text {
+            font-size: 11px;
+            color: var(--dark-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .video-bottom-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 12px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .video-timeline-bar {
+            flex: 1;
+            height: 3px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 1px;
+            position: relative;
+        }
+
+        .video-timeline-fill {
+            width: 35%;
+            height: 100%;
+            background: #fff;
+            border-radius: 1px;
+        }
+
+        .video-meta-info {
+            margin-top: 16px;
+        }
+
+        .video-meta-tag {
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--dark-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 6px;
+        }
+
+        .video-meta-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--dark-text);
+        }
+
+        .cognitive-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--dark-border);
+            border-radius: 100px;
+            font-size: 10px;
+            color: var(--dark-muted);
+            margin-top: 8px;
+        }
+
+        .cognitive-badge::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #10b981;
+        }
+
+        /* 5. Study Ledger Panel */
+        .video-sidebar {
+            width: 240px;
+            display: flex;
+            flex-direction: column;
+            background: var(--dark-card);
+        }
+
+        .sidebar-tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 1px solid var(--dark-border);
+        }
+
+        .sidebar-tab-btn {
+            background: none;
+            border: none;
+            padding: 12px 6px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--dark-muted);
+            cursor: pointer;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .sidebar-tab-btn.active {
+            color: var(--dark-text);
+            border-bottom: 1px solid var(--dark-text);
+        }
+
+        .sidebar-content-area {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .timeline-outline-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .outline-item {
+            display: flex;
+            gap: 8px;
+            font-size: 11.5px;
+            cursor: pointer;
+        }
+
+        .outline-time {
+            font-weight: 600;
+            color: var(--dark-text);
+            min-width: 32px;
+        }
+
+        .outline-title {
+            color: var(--dark-muted);
+            transition: var(--transition-fast);
+        }
+
+        .outline-item:hover .outline-title {
+            color: var(--dark-text);
+        }
+
+        .ai-insight-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--dark-border);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            margin-top: 16px;
+        }
+
+        .ai-insight-hdr {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .ai-insight-body {
+            font-size: 10.5px;
+            color: var(--dark-muted);
+            line-height: 1.4;
+        }
+
+        /* Ledger note inputs */
+        .ledger-notes-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .ledger-note-item {
+            font-size: 11px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--dark-border);
+            padding: 8px;
+            border-radius: 4px;
+            color: var(--dark-text);
+        }
+
+        .ledger-note-time {
+            font-weight: 600;
+            color: var(--dark-muted);
+            margin-right: 6px;
+        }
+
+        .ledger-form {
+            margin-top: auto;
+            display: flex;
+            gap: 6px;
+            padding-top: 12px;
+            border-top: 1px solid var(--dark-border);
+        }
+
+        .ledger-input {
+            flex: 1;
+            height: 30px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--dark-border);
+            border-radius: 4px;
+            color: #fff;
+            font-size: 11px;
+            padding: 0 8px;
+            outline: none;
+        }
+
+        .ledger-btn {
+            height: 30px;
+            padding: 0 10px;
+            background: #fff;
+            color: #000;
+            border: none;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* 6. Roadmap Progress Timeline */
+        .roadmap-container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .roadmap-timeline {
+            position: relative;
+            padding-left: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .roadmap-timeline::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            bottom: 4px;
+            left: 5px;
+            width: 1px;
+            background: var(--border-med);
+        }
+
+        .roadmap-node {
+            position: relative;
+        }
+
+        .roadmap-node::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 4px;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: var(--bg-pure);
+            border: 2px solid var(--border-med);
+            box-shadow: 0 0 0 3px var(--bg-pure);
+            z-index: 2;
+        }
+
+        .roadmap-node.active::before {
+            border-color: var(--text-title);
+            background: var(--text-title);
+        }
+
+        .roadmap-node.done::before {
+            border-color: var(--accent-silver);
+            background: var(--accent-silver);
+        }
+
+        .roadmap-node-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-title);
+        }
+
+        .roadmap-node-desc {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .adaptation-card {
+            margin-top: 24px;
+            padding: 16px;
+            background: var(--bg-soft);
+            border: 1px solid var(--border-med);
+            border-radius: var(--radius-sm);
+        }
+
+        .adaptation-tag {
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--accent-blue-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .adaptation-desc {
+            font-size: 11.5px;
+            line-height: 1.5;
+            color: var(--text-body);
+        }
+
+        /* 7. Interactive Luma AI Chatbot */
+        .chat-layout {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        .chat-sidebar {
+            width: 180px;
+            border-right: 1px solid var(--border-light);
+            background: var(--bg-soft);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            flex-shrink: 0;
+        }
+
+        .chat-history-title {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .chat-history-item {
+            font-size: 11px;
+            color: var(--text-body);
+            padding: 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-history-item:hover {
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-pure);
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .chat-msg {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .chat-msg.user {
+            background: var(--bg-soft);
+            color: var(--text-title);
+            align-self: flex-end;
+            border: 1px solid var(--border-light);
+        }
+
+        .chat-msg.bot {
+            background: var(--accent-blue-gray-light);
+            color: var(--text-title);
+            align-self: flex-start;
+        }
+
+        .chat-presets {
+            padding: 10px 20px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .preset-chip {
+            padding: 5px 10px;
+            border-radius: 100px;
+            border: 1px solid var(--border-med);
+            background: var(--bg-pure);
+            font-size: 10px;
+            font-weight: 500;
+            color: var(--text-body);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .preset-chip:hover {
+            background: var(--bg-soft);
+            border-color: var(--text-title);
+        }
+
+        .chat-form {
+            padding: 12px 20px;
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .chat-input {
+            flex: 1;
+            height: 34px;
+            border: 1px solid var(--border-med);
+            border-radius: var(--radius-sm);
+            padding: 0 12px;
+            font-size: 12px;
+            outline: none;
+        }
+
+        .chat-submit-btn {
+            height: 34px;
+            padding: 0 16px;
+            background: var(--text-title);
+            color: var(--bg-pure);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .flow-state-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 9px;
+            font-weight: 600;
+            color: #10b981;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-right: auto;
+        }
+
+        .flow-state-badge::before {
+            content: '';
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #10b981;
+        }
+
+        /* ── Comparison Section ── */
+        .comparison {
+            background: var(--bg-soft);
+        }
+
+        .comp-table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 60px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-med);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .comp-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            background: var(--bg-pure);
+            font-size: 14px;
+        }
+
+        .comp-table th, .comp-table td {
+            padding: 24px 32px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .comp-table th {
+            background: var(--accent-graphite);
+            color: var(--bg-pure);
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .comp-table th.hl {
+            background: #000;
+        }
+
+        .comp-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comp-table tr:hover td {
+            background: var(--bg-soft);
+        }
+
+        .comp-feature {
+            font-weight: 600;
+            color: var(--text-title);
+        }
+
+        .comp-value-luma {
+            font-weight: 500;
+            color: #000;
+        }
+
+        /* ── Outcomes / Reflection Section ── */
+        .outcomes {
+            background: var(--bg-pure);
+        }
+
+        .outcomes-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8vw;
+            margin-top: 60px;
+        }
+
+        .outcome-block {
+            margin-bottom: 40px;
+        }
+
+        .outcome-title-sm {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-title);
+            margin-bottom: 12px;
+        }
+
+        .outcome-body {
+            font-size: 14.5px;
+            color: var(--text-body);
+            line-height: 1.7;
+        }
+
+        /* ── Footer ── */
+        footer {
+            background: #000000;
+            color: #ffffff;
+            padding: 80px 4vw 40px;
+        }
+
+        .footer-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 60px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .footer-brand {
+            font-family: 'Outfit', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+        }
+
+        .footer-tagline {
+            font-size: 14px;
+            color: var(--accent-silver);
+            max-width: 320px;
+            font-weight: 300;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 48px;
+            flex-wrap: wrap;
+        }
+
+        .footer-col {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-col-title {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 8px;
+        }
+
+        .footer-col a {
+            font-size: 13px;
+            color: var(--accent-silver);
+            text-decoration: none;
+            transition: var(--transition-fast);
+        }
+
+        .footer-col a:hover {
+            color: #fff;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-credits strong {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* ── Responsive adjustments ── */
+        @media (max-width: 900px) {
+            .editorial-layout {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .showcase-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .showcase-menu {
+                position: relative;
+                top: 0;
+                flex-direction: row;
+                overflow-x: auto;
+                padding-bottom: 12px;
+                border-bottom: 1px solid var(--border-light);
+            }
+
+            .menu-btn {
+                padding: 10px 16px;
+                white-space: nowrap;
+            }
+
+            .outcomes-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .ds-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .bullets-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .research-summary {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+
+            .targets-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ds-palette {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .dash-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .course-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chat-layout {
+                flex-direction: column;
+            }
+
+            .chat-sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border-light);
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Scroll Progress -->
+    <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <a href="#" class="nav-logo">LUMA</a>
+        <ul class="nav-links">
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#research">Research</a></li>
+            <li><a href="#design">Design System</a></li>
+            <li><a href="#showcase">UI Showcase</a></li>
+            <li><a href="#comparison">Analysis</a></li>
+        </ul>
+        <a href="https://github.com/varun-150/Luma" target="_blank" class="nav-pill">Project Code ↗</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-noise"></div>
+        <div class="hero-container">
+            <div class="hero-badge">KL University · 2026</div>
+            <h1 class="hero-title">
+                LUMA
+                <span>Sanctuary of Learning.</span>
+            </h1>
+            <div class="hero-meta">
+                <p class="hero-desc">
+                    Transforming digital distraction and cognitive fatigue into a calm, structured space designed for deep, uninterrupted student focus.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-num">Minimal</span>
+                        <span class="stat-lbl">Visual Noise</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num">Optimized</span>
+                        <span class="stat-lbl">Cognitive Load</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-cue">
+            <div class="scroll-line"></div>
+            <span class="scroll-lbl">Scroll</span>
+        </div>
+    </section>
+
+    <!-- Project Overview -->
+    <section id="overview" class="reveal">
+        <div class="section-inner editorial-layout">
+            <div>
+                <span class="section-tag">01 / Introduction</span>
+                <h2 class="section-h2">Redesigning the<br>learning flow.</h2>
+            </div>
+            <div class="problem-right">
+                <p class="editorial-lead">
+                    LUMA is a custom student ecosystem conceptualized and built to resolve the fundamental issues of popular educational apps.
+                </p>
+                <div class="editorial-body">
+                    <p>
+                        Platforms like Udemy, Coursera, or educational hubs have become centers of visual noise. Instead of offering students a quiet space to learn, they overwhelm with ads, endless catalogs, aggressive gamification models, and distracting recommendations.
+                    </p>
+                    <p>
+                        LUMA replaces this chaotic approach with a serene, modern layout. Taking inspiration from the clean, structured styling of premium modern software, LUMA introduces cognitive checkpoints, integrated ledger systems, and tailored AI curators to help students learn with clarity.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Statement -->
+    <section class="problem reveal">
+        <div class="section-inner editorial-layout">
+            <div>
+                <span class="section-tag">02 / Challenge</span>
+                <h2 class="section-h2">The rise of<br><span>learning fatigue.</span></h2>
+            </div>
+            <div class="problem-right">
+                <p class="editorial-lead">
+                    When the interface competes with the course content, focus is the first casualty.
+                </p>
+                <div class="bullets-grid">
+                    <div class="bullet-card">
+                        <div class="bullet-num">I</div>
+                        <div class="bullet-title">Information Overload</div>
+                        <div class="bullet-desc">Endless list recommendations lead to cognitive analysis paralysis before learning even starts.</div>
+                    </div>
+                    <div class="bullet-card">
+                        <div class="bullet-num">II</div>
+                        <div class="bullet-title">Crowded Learning Frames</div>
+                        <div class="bullet-desc">Constant pop-ups, notifications, and sidebar widgets break user concentration mid-session.</div>
+                    </div>
+                    <div class="bullet-card">
+                        <div class="bullet-num">III</div>
+                        <div class="bullet-title">Impersonal Frameworks</div>
+                        <div class="bullet-desc">Static timelines that ignore user stress cycles, forcing math-based percentages over mental health.</div>
+                    </div>
+                    <div class="bullet-card">
+                        <div class="bullet-num">IV</div>
+                        <div class="bullet-title">Friction-based Tools</div>
+                        <div class="bullet-desc">Separated note utilities force learners to cycle outside the window, disrupting the flow state.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Research Insights & Data -->
+    <section id="research" class="reveal">
+        <div class="section-inner">
+            <span class="section-tag">03 / Analysis</span>
+            <div class="editorial-layout" style="margin-bottom: 60px;">
+                <h2 class="section-h2">Research &<br>insights.</h2>
+                <div>
+                    <p class="editorial-lead">Studying student concentration blocks during digital sessions.</p>
+                    <p class="editorial-body">
+                        Before prototyping, we analyzed how learners respond to interface design options. Students who use crowded frameworks experience rapid heart rate fluctuations and cognitive exhaustion within 22 minutes, compared to those utilizing spatial layouts.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="research-summary">
+                <div class="insight-stat">
+                    <span class="insight-num">72%</span>
+                    <span class="insight-lbl">Decision Exhaustion</span>
+                    <span class="insight-desc">Students report abandoning a learning session early due to difficulties navigating recommendations.</span>
+                </div>
+                <div class="insight-stat">
+                    <span class="insight-num">3.5x</span>
+                    <span class="insight-lbl">Focus Retention</span>
+                    <span class="insight-desc">Uncluttered video players without sidebar recommendations kept students locked in deep study for longer.</span>
+                </div>
+                <div class="insight-stat">
+                    <span class="insight-num">88%</span>
+                    <span class="insight-lbl">Ledger Adaptability</span>
+                    <span class="insight-desc">Learners preferred auto-timestamped integrated ledgers over manual notebook notes.</span>
+                </div>
+            </div>
+
+            <!-- Quote Carousel -->
+            <div class="quote-slider">
+                <span class="quote-icon">“</span>
+                <p class="quote-text" id="carouselQuote">Good design is not just about making things look nice. It is about making the experience feel right.</p>
+                <span class="quote-author" id="carouselAuthor">Akuri Venkata Surya Varun</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Target Users & Goals -->
+    <section class="targets reveal">
+        <div class="section-inner">
+            <span class="section-tag">04 / Core Demographics</span>
+            <div class="editorial-layout">
+                <h2 class="section-h2">Designed for<br><span>uninterrupted paths.</span></h2>
+                <p class="editorial-lead">
+                    LUMA aligns its interaction framework to students who prioritize a calm interface over loud metrics.
+                </p>
+            </div>
+            
+            <div class="targets-grid">
+                <div class="target-card">
+                    <span class="target-role">Self-Directed Learner</span>
+                    <div>
+                        <h3 class="target-title">The Auto-Didact</h3>
+                        <p class="target-desc">Learns complex technical skills independently. Demands clear structures, minimal navigation, and easy progress checks.</p>
+                    </div>
+                </div>
+                <div class="target-card">
+                    <span class="target-role">Focused Academic</span>
+                    <div>
+                        <h3 class="target-title">The University Student</h3>
+                        <p class="target-desc">Uses online modules to supplement core course curricula. Values immediate access to notes and time management indicators.</p>
+                    </div>
+                </div>
+                <div class="target-card">
+                    <span class="target-role">Deep Focus Worker</span>
+                    <div>
+                        <h3 class="target-title">The Distraction-Sensitive</h3>
+                        <p class="target-desc">Highly sensitive to visual popups, notifications, and gamified side tasks. Thrives on minimal design styles.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Design System Section -->
+    <section id="design" class="design-sys reveal">
+        <div class="section-inner">
+            <span class="section-tag">05 / Aesthetics</span>
+            <h2 class="section-h2">The Design Language.</h2>
+            <div class="ds-grid">
+                <div class="ds-left">
+                    <h3>Monochrome Harmony</h3>
+                    <p class="editorial-body" style="margin-bottom: 40px;">
+                        To secure a sense of calm, LUMA discards the standard oversaturated gradients and energetic purples. We establish a clean titanium scale that highlights text hierarchy and code components.
+                    </p>
+                    
+                    <div class="ds-palette">
+                        <div class="ds-swatch">
+                            <div class="ds-color" style="background: #ffffff;"></div>
+                            <div class="ds-color-lbl">Pure White<span>#ffffff</span></div>
+                        </div>
+                        <div class="ds-swatch">
+                            <div class="ds-color" style="background: #f8f9fa;"></div>
+                            <div class="ds-color-lbl">Alabaster<span>#f8f9fa</span></div>
+                        </div>
+                        <div class="ds-swatch">
+                            <div class="ds-color" style="background: #e5e7eb;"></div>
+                            <div class="ds-color-lbl">Slate Swell<span>#e5e7eb</span></div>
+                        </div>
+                        <div class="ds-swatch">
+                            <div class="ds-color" style="background: #525252;"></div>
+                            <div class="ds-color-lbl">Titanium<span>#525252</span></div>
+                        </div>
+                        <div class="ds-swatch">
+                            <div class="ds-color" style="background: #000000;"></div>
+                            <div class="ds-color-lbl">Matte Obsidian<span>#000000</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ds-left">
+                    <h3>Typography & Spacing Scale</h3>
+                    <div class="ds-typo-item">
+                        <div class="ds-typo-label">Headings: Outfit Sans</div>
+                        <div class="ds-typo-preview-h1">STUDENT SANCTUARY</div>
+                    </div>
+                    <div class="ds-typo-item">
+                        <div class="ds-typo-label">Body Elements: Inter Typeface</div>
+                        <p class="ds-typo-preview-body">
+                            The quick brown fox jumps over the lazy dog. A calm layout depends on airy text blocks.
+                        </p>
+                    </div>
+                    <div class="ds-spacing">
+                        <div class="ds-typo-label">Spacing Structure</div>
+                        <div class="ds-space-row">
+                            <span class="ds-space-lbl">Subtle (12px)</span>
+                            <div class="ds-space-bar" style="width: 24px;"></div>
+                        </div>
+                        <div class="ds-space-row">
+                            <span class="ds-space-lbl">Balanced (24px)</span>
+                            <div class="ds-space-bar" style="width: 48px;"></div>
+                        </div>
+                        <div class="ds-space-row">
+                            <span class="ds-space-lbl">Comfort (48px)</span>
+                            <div class="ds-space-bar" style="width: 96px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- UI Showcase Simulator -->
+    <section id="showcase" class="showcase reveal">
+        <div class="section-inner">
+            <span class="section-tag">06 / Live Interface Simulator</span>
+            <div class="editorial-layout" style="margin-bottom: 40px;">
+                <h2 class="section-h2">The Interactive<br>showcase.</h2>
+                <p class="editorial-lead">
+                    Navigate through our premium screen simulations below. Try out the functional elements directly to experience the design first-hand.
+                </p>
+            </div>
+
+            <div class="showcase-grid">
+                <!-- Navigation Menu -->
+                <div class="showcase-menu">
+                    <button class="menu-btn active" onclick="switchScreen(0)">
+                        <span><span class="menu-idx">01</span>Onboarding Flows</span>
+                        <span>→</span>
+                    </button>
+                    <button class="menu-btn" onclick="switchScreen(1)">
+                        <span><span class="menu-idx">02</span>Home Dashboard</span>
+                        <span>→</span>
+                    </button>
+                    <button class="menu-btn" onclick="switchScreen(2)">
+                        <span><span class="menu-idx">03</span>Explore Catalog</span>
+                        <span>→</span>
+                    </button>
+                    <button class="menu-btn" onclick="switchScreen(3)">
+                        <span><span class="menu-idx">04</span>Video Player</span>
+                        <span>→</span>
+                    </button>
+                    <button class="menu-btn" onclick="switchScreen(4)">
+                        <span><span class="menu-idx">05</span>Study Ledger</span>
+                        <span>→</span>
+                    </button>
+                    <button class="menu-btn" onclick="switchScreen(5)">
+                        <span><span class="menu-idx">06</span>Adaptive Roadmap</span>
+                        <span>→</span>
+                    </button>
+                    <button class="menu-btn" onclick="switchScreen(6)">
+                        <span><span class="menu-idx">07</span>AI Curator Chat</span>
+                        <span>→</span>
+                    </button>
+                </div>
+
+                <!-- Simulation Viewport -->
+                <div class="screen-container">
+                    
+                    <!-- 1. AUTH SCREEN -->
+                    <div class="screen-panel active" id="screenPanel0">
+                        <div class="screen-header-meta">
+                            <span class="screen-headline">01 — Auth and Onboarding</span>
+                            <span class="screen-subline">Motivational copy elements encouraging student focus cycles.</span>
+                        </div>
+                        <div class="device-mockup">
+                            <div class="auth-layout">
+                                <div class="auth-visual">
+                                    <span class="auth-visual-tag">Evolution</span>
+                                    <h2 class="auth-visual-h2">"Enter your presence to resume your quiet evolution."</h2>
+                                </div>
+                                <div class="auth-form-side">
+                                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 24px; color: var(--text-title);">Welcome Back</h3>
+                                    <div class="auth-input-group">
+                                        <label class="auth-label">Email Address</label>
+                                        <input type="email" class="auth-input" placeholder="student@university.edu" value="varun@university.edu">
+                                    </div>
+                                    <div class="auth-input-group">
+                                        <label class="auth-label">Password</label>
+                                        <input type="password" class="auth-input" value="••••••••••••••">
+                                    </div>
+                                    <button class="auth-btn">Enter Sanctuary</button>
+                                    <div class="auth-divider">OR</div>
+                                    <div class="auth-oauth-btns">
+                                        <button class="oauth-btn">Google</button>
+                                        <button class="oauth-btn">GitHub</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. HOME DASHBOARD -->
+                    <div class="screen-panel" id="screenPanel1">
+                        <div class="screen-header-meta">
+                            <span class="screen-headline">02 — Home Dashboard</span>
+                            <span class="screen-subline">Active study stats with interactive focus timer and checklist modules.</span>
+                        </div>
+                        <div class="device-mockup">
+                            <div class="app-sidebar">
+                                <div class="app-logo">LUMA</div>
+                                <div class="app-nav">
+                                    <a href="#" class="app-nav-item active"><span style="width: 5px; height: 5px; border-radius:50%; background: #000;"></span>Dashboard</a>
+                                    <a href="#" class="app-nav-item">Explore</a>
+                                    <a href="#" class="app-nav-item">Evolution</a>
+                                    <a href="#" class="app-nav-item">Curator</a>
+                                </div>
+                            </div>
+                            <div class="app-main">
+                                <h3 class="dash-greeting">Welcome back, Varun</h3>
+                                <p class="dash-sub">Here is your presence check for today.</p>
+                                
+                                <div class="dash-grid">
+                                    <!-- Interactive Pomodoro Timer -->
+                                    <div class="pomo-widget">
+                                        <span class="pomo-title" id="pomoLabel">Focus Session</span>
+                                        <div class="pomo-timer" id="pomoTime">25:00</div>
+                                        <div class="pomo-controls">
+                                            <button class="pomo-btn primary" id="pomoStartBtn" onclick="togglePomodoro()">Start</button>
+                                            <button class="pomo-btn" onclick="resetPomodoro()">Reset</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Checklist Goals -->
+                                    <div class="dash-card">
+                                        <div class="card-header-sm">
+                                            <span>TODAY'S WORK</span>
+                                            <span style="font-weight: 500; font-size: 10px; color: var(--accent-silver);" id="checklistProgress">0/3 Completed</span>
+                                        </div>
+                                        <div class="checklist-item" onclick="toggleChecklistItem(this, 0)">
+                                            <input type="checkbox" id="goal0" style="margin-right: 8px;">
+                                            <span>Read Psychology Core Outline</span>
+                                        </div>
+                                        <div class="checklist-item" onclick="toggleChecklistItem(this, 1)">
+                                            <input type="checkbox" id="goal1" style="margin-right: 8px;">
+                                            <span>Watch UI Design Lesson 4</span>
+                                        </div>
+                                        <div class="checklist-item" onclick="toggleChecklistItem(this, 2)">
+                                            <input type="checkbox" id="goal2" style="margin-right: 8px;">
+                                            <span>Update Ledger Notes Log</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. EXPLORE CATALOG -->
+                    <div class="screen-panel" id="screenPanel2">
+                        <div class="screen-header-meta">
+                            <span class="screen-headline">03 — Course Discovery</span>
+                            <span class="screen-subline">Clean filters focusing on subject disciplines without recommendation clutter.</span>
+                        </div>
+                        <div class="device-mockup">
+                            <div class="app-sidebar">
+                                <div class="app-logo">LUMA</div>
+                                <div class="app-nav">
+                                    <a href="#" class="app-nav-item">Dashboard</a>
+                                    <a href="#" class="app-nav-item active"><span style="width: 5px; height: 5px; border-radius:50%; background: #000;"></span>Explore</a>
+                                    <a href="#" class="app-nav-item">Evolution</a>
+                                    <a href="#" class="app-nav-item">Curator</a>
+                                </div>
+                            </div>
+                            <div class="app-main">
+                                <div class="explore-banner">
+                                    <span style="font-size: 9px; font-weight: 600; color: var(--accent-blue-gray); text-transform: uppercase; letter-spacing: 0.05em; display:block; margin-bottom: 6px;">Evolution Path</span>
+                                    <h4>What will you master today?</h4>
+                                </div>
+                                <div class="explore-filters">
+                                    <span class="filter-chip active">All Subjects</span>
+                                    <span class="filter-chip">UI Design</span>
+                                    <span class="filter-chip">Humanities</span>
+                                    <span class="filter-chip">Development</span>
+                                    <span class="filter-chip">Psychology</span>
+                                </div>
+                                <div class="course-grid">
+                                    <div class="course-card">
+                                        <div>
+                                            <span class="course-meta">UI Design · 12 Modules</span>
+                                            <h5 class="course-title">Minimalist Aesthetic Design Patterns</h5>
+                                        </div>
+                                        <div class="course-footer">
+                                            <span>Phase 1 of 3</span>
+                                            <span style="font-weight: 600;">Resume →</span>
+                                        </div>
+                                    </div>
+                                    <div class="course-card">
+                                        <div>
+                                            <span class="course-meta">Psychology · 8 Modules</span>
+                                            <h5 class="course-title">Cognitive Load and Human-Computer Systems</h5>
+                                        </div>
+                                        <div class="course-footer">
+                                            <span>Not Started</span>
+                                            <span style="font-weight: 600;">Begin →</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. VIDEO PLAYER -->
+                    <div class="screen-panel" id="screenPanel3">
+                        <div class="screen-header-meta">
+                            <span class="screen-headline">04 — Video Theater Mode</span>
+                            <span class="screen-subline">Theater view designed in black to redirect attention back to content.</span>
+                        </div>
+                        <div class="device-mockup dark">
+                            <div class="video-player-container">
+                                <div class="video-main">
+                                    <div class="video-box">
+                                        <div class="video-center-controls">
+                                            <div class="play-ring" id="videoPlayRing" onclick="simulateVideoToggle()">
+                                                <svg id="videoPlaySvg" viewBox="0 0 10 10"><polygon points="3,2 8,5 3,8" /></svg>
+                                            </div>
+                                            <span class="video-duration-text" id="videoProgressText">03:14 / 12:40</span>
+                                        </div>
+                                        <div class="video-bottom-bar">
+                                            <div class="video-timeline-bar" onclick="scrubVideo(event)">
+                                                <div class="video-timeline-fill" id="videoTimelineFill" style="width: 25.5%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="video-meta-info">
+                                        <span class="video-meta-tag">Course Module 2 · Lesson 4</span>
+                                        <div class="video-meta-title">The Principle of Whitespace in Editorial Interfaces</div>
+                                        <div class="cognitive-badge">Cognitive Stress: Low</div>
+                                    </div>
+                                </div>
+                                <div class="video-sidebar">
+                                    <div class="sidebar-tabs">
+                                        <div class="sidebar-tab-btn active">Outline</div>
+                                        <div class="sidebar-tab-btn" onclick="switchScreen(4)">Ledger</div>
+                                    </div>
+                                    <div class="sidebar-content-area">
+                                        <ul class="timeline-outline-list">
+                                            <li class="outline-item" onclick="setVideoTime('0:00', 0)">
+                                                <span class="outline-time">0:00</span>
+                                                <span class="outline-title">Introduction to editorial margins</span>
+                                            </li>
+                                            <li class="outline-item" onclick="setVideoTime('3:14', 25.5)">
+                                                <span class="outline-time" style="color: #fff;">3:14</span>
+                                                <span class="outline-title" style="color: #fff;">Spacing as active visual logic</span>
+                                            </li>
+                                            <li class="outline-item" onclick="setVideoTime('6:45', 53.5)">
+                                                <span class="outline-time">6:45</span>
+                                                <span class="outline-title">Case analysis: Stripe & Linear layouts</span>
+                                            </li>
+                                            <li class="outline-item" onclick="setVideoTime('10:12', 80.5)">
+                                                <span class="outline-time">10:12</span>
+                                                <span class="outline-title">Balancing content with margins</span>
+                                            </li>
+                                        </ul>
+                                        
+                                        <div class="ai-insight-box">
+                                            <div class="ai-insight-hdr">
+                                                <span style="display:inline-block; width: 4px; height: 4px; border-radius:50%; background: #3b82f6;"></span>
+                                                AI Insight
+                                            </div>
+                                            <p class="ai-insight-body">
+                                                This section aligns with your study notes on "Visual Clutter Reduction" created last Tuesday.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 5. STUDY LEDGER -->
+                    <div class="screen-panel" id="screenPanel4">
+                        <div class="screen-header-meta">
+                            <span class="screen-headline">05 — Integrated Study Ledger</span>
+                            <span class="screen-subline">Integrated notebook mapping auto-timestamped inputs directly onto the curriculum.</span>
+                        </div>
+                        <div class="device-mockup dark">
+                            <div class="video-player-container">
+                                <div class="video-main">
+                                    <div class="video-box" style="opacity: 0.65;">
+                                        <div class="video-center-controls">
+                                            <span class="video-duration-text">Video Background Overlay</span>
+                                        </div>
+                                    </div>
+                                    <div class="video-meta-info">
+                                        <span class="video-meta-tag">Course Module 2 · Lesson 4</span>
+                                        <div class="video-meta-title">The Principle of Whitespace in Editorial Interfaces</div>
+                                        <div class="cognitive-badge">Ledger active: 3 logs created</div>
+                                    </div>
+                                </div>
+                                <div class="video-sidebar">
+                                    <div class="sidebar-tabs">
+                                        <div class="sidebar-tab-btn" onclick="switchScreen(3)">Outline</div>
+                                        <div class="sidebar-tab-btn active">Ledger</div>
+                                    </div>
+                                    <div class="sidebar-content-area">
+                                        <div class="ledger-notes-container">
+                                            <div class="chat-history-title" style="color: var(--dark-muted)">Timestamped Notes</div>
+                                            <div id="ledgerNotesList" style="display: flex; flex-direction: column; gap: 8px;">
+                                                <div class="ledger-note-item">
+                                                    <span class="ledger-note-time">[0:45]</span>Whitespace isn't dead space.
+                                                </div>
+                                                <div class="ledger-note-item">
+                                                    <span class="ledger-note-time">[2:12]</span>Helps avoid decision and scroll exhaustion.
+                                                </div>
+                                            </div>
+                                            
+                                            <form class="ledger-form" onsubmit="addLedgerNote(event)">
+                                                <input type="text" class="ledger-input" id="ledgerInput" placeholder="Log note at current moment...">
+                                                <button type="submit" class="ledger-btn">Log</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 6. ADAPTIVE ROADMAP -->
+                    <div class="screen-panel" id="screenPanel5">
+                        <div class="screen-header-meta">
+                            <span class="screen-headline">06 — Adaptive Curriculum Roadmap</span>
+                            <span class="screen-subline">Curriculum path timeline tracking progression and suggesting dynamic shifts.</span>
+                        </div>
+                        <div class="device-mockup">
+                            <div class="app-sidebar">
+                                <div class="app-logo">LUMA</div>
+                                <div class="app-nav">
+                                    <a href="#" class="app-nav-item">Dashboard</a>
+                                    <a href="#" class="app-nav-item">Explore</a>
+                                    <a href="#" class="app-nav-item active"><span style="width: 5px; height: 5px; border-radius:50%; background: #000;"></span>Evolution</a>
+                                    <a href="#" class="app-nav-item">Curator</a>
+                                </div>
+                            </div>
+                            <div class="app-main">
+                                <h3 style="font-size: 18px; font-weight: 700; color: var(--text-title); margin-bottom: 20px;">Evolution Roadmap</h3>
+                                <div class="roadmap-container">
+                                    <div class="roadmap-timeline">
+                                        <div class="roadmap-node done">
+                                            <div class="roadmap-node-title">Phase 1: Design Margin Foundations</div>
+                                            <div class="roadmap-node-desc">Understanding padding, margins, visual frames, and standard layout geometry. (Completed)</div>
+                                        </div>
+                                        <div class="roadmap-node active">
+                                            <div class="roadmap-node-title">Phase 2: Cognitive Load Optimization</div>
+                                            <div class="roadmap-node-desc">Analyzing data visual noise and building distraction-free interfaces. (Active Session)</div>
+                                        </div>
+                                        <div class="roadmap-node">
+                                            <div class="roadmap-node-title">Phase 3: Interactive Physics</div>
+                                            <div class="roadmap-node-desc">Adding micro-motion models and ease transitions. (Locked)</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="adaptation-card">
+                                        <span class="adaptation-tag">AI Roadmap Adaptation</span>
+                                        <p class="adaptation-desc">
+                                            Based on your performance and note logs, we have adapted Phase 3 to focus more on spring physics configurations rather than simple linear transitions.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 7. AI CURATOR -->
+                    <div class="screen-panel" id="screenPanel6">
+                        <div class="screen-header-meta">
+                            <span class="screen-headline">07 — Luma Curator Assistant</span>
+                            <span class="screen-subline">Context-aware conversational companion aligned to your active learning syllabus.</span>
+                        </div>
+                        <div class="device-mockup">
+                            <div class="chat-layout">
+                                <div class="chat-sidebar">
+                                    <div class="chat-history-title">Conversations</div>
+                                    <div class="chat-history-item" onclick="loadChatPreset('Explain Cognitive Load')">Cognitive Load Theory</div>
+                                    <div class="chat-history-item" onclick="loadChatPreset('Suggest study routine')">Study focus methods</div>
+                                </div>
+                                <div class="chat-main">
+                                    <div class="chat-messages" id="chatMessages">
+                                        <div class="chat-msg bot">
+                                            Hello Varun. I see you are studying Lesson 4 on Whitespace and Visual Noise. How can I guide you today?
+                                        </div>
+                                    </div>
+                                    <div class="chat-presets">
+                                        <button class="preset-chip" onclick="clickPreset('Tell me about whitespace')">Explain Whitespace Logic</button>
+                                        <button class="preset-chip" onclick="clickPreset('Explain Cognitive Stress')">What is Cognitive Stress?</button>
+                                    </div>
+                                    <form class="chat-form" onsubmit="sendChatMessage(event)">
+                                        <span class="flow-state-badge">Flow Active</span>
+                                        <input type="text" class="chat-input" id="chatInput" placeholder="Ask Luma Curator...">
+                                        <button type="submit" class="chat-submit-btn">Ask</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Section -->
+    <section id="comparison" class="comparison reveal">
+        <div class="section-inner">
+            <span class="section-tag">07 / Evaluation Matrix</span>
+            <div class="editorial-layout" style="margin-bottom: 40px;">
+                <h2 class="section-h2">The shift in<br>philosophy.</h2>
+                <p class="editorial-lead">
+                    Standard platforms optimize for retention-heavy engagement. LUMA is engineered for calm, focused mastery.
+                </p>
+            </div>
+            
+            <div class="comp-table-container">
+                <table class="comp-table">
+                    <thead>
+                        <tr>
+                            <th>Interaction Aspect</th>
+                            <th>Traditional Learning Apps</th>
+                            <th class="hl">Luma Sanctuary</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="comp-feature">Visual Clutter</td>
+                            <td>Heavy sidebar navigation, popups, banner ads, upsells.</td>
+                            <td class="comp-value-luma">Minimal margins, content-focused frames.</td>
+                        </tr>
+                        <tr>
+                            <td class="comp-feature">Focus Tracking</td>
+                            <td>Gamified point streaks, sound cues, competitive stats.</td>
+                            <td class="comp-value-luma">Integrated Pomodoro timer, presence logs.</td>
+                        </tr>
+                        <tr>
+                            <td class="comp-feature">Note Integration</td>
+                            <td>Forces third-party word processors or manual windows.</td>
+                            <td class="comp-value-luma">Auto-timestamped Ledger inside the course window.</td>
+                        </tr>
+                        <tr>
+                            <td class="comp-feature">Navigation Model</td>
+                            <td>Densely packed catalogs requiring heavy filtering.</td>
+                            <td class="comp-value-luma">Structured, sequential evolution phases.</td>
+                        </tr>
+                        <tr>
+                            <td class="comp-feature">Assistance Engine</td>
+                            <td>Standard chatbot FAQ queries.</td>
+                            <td class="comp-value-luma">Context-aware Curator aligned with study notes.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Outcomes & Conclusion -->
+    <section class="outcomes reveal">
+        <div class="section-inner">
+            <span class="section-tag">08 / Reflection & Learning</span>
+            <div class="editorial-layout" style="margin-bottom: 60px;">
+                <h2 class="section-h2">Key Takeaways &<br>Outcomes.</h2>
+                <p class="editorial-lead">
+                    How constraints and visual minimalism helped redefine the digital student interface.
+                </p>
+            </div>
+            
+            <div class="outcomes-grid">
+                <div>
+                    <div class="outcome-block">
+                        <h3 class="outcome-title-sm">01 / Intentional Workspace</h3>
+                        <p class="outcome-body">
+                            The main takeaway from building LUMA is the value of spatial breathing room. Visual noise doesn't just look messy; it drains active attention. Minimizing layout details allows students to focus entirely on the material, reducing visual fatigue.
+                        </p>
+                    </div>
+                    <div class="outcome-block">
+                        <h3 class="outcome-title-sm">02 / Integrated Note Ledgers</h3>
+                        <p class="outcome-body">
+                            Enabling timestamped logs directly beside course videos keeps students in their workflow. By reducing the need to cycle between different windows, we minimize cognitive context-switching.
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <div class="outcome-block">
+                        <h3 class="outcome-title-sm">03 / Humanizing Assistive AI</h3>
+                        <p class="outcome-body">
+                            Rather than functioning as a standard help center, the Luma Curator coordinates actively with the user's notes and current progress. This helps it act like an organic learning partner rather than a generic database.
+                        </p>
+                    </div>
+                    <div class="outcome-block">
+                        <h3 class="outcome-title-sm">04 / B.Tech Second Year Milestone</h3>
+                        <p class="outcome-body">
+                            Designed as a college study project, LUMA proves that minimal styling choices can deliver robust user value. Focusing on visual simplicity helped clarify our structural objectives.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-top">
+                <div>
+                    <div class="footer-brand">LUMA</div>
+                    <p class="footer-tagline">
+                        A student learning sanctuary. Designed to minimize cognitive overload and encourage deep focus.
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <span class="footer-col-title">Project</span>
+                        <a href="https://github.com/varun-150/Luma" target="_blank">GitHub Repository ↗</a>
+                        <a href="https://luma-student-app.onrender.com/" target="_blank">Live Website ↗</a>
+                    </div>
+                    <div class="footer-col">
+                        <span class="footer-col-title">Contact</span>
+                        <a href="mailto:akurivarun@gmail.com">akurivarun@gmail.com</a>
+                        <a href="https://github.com/varun-150" target="_blank">GitHub Profile ↗</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-credits">
+                    Designed and coded by <strong>Akuri Venkata Surya Varun</strong> &nbsp;·&nbsp; B.Tech CSE, KL University
+                </div>
+                <div>
+                    © 2026 LUMA. Sanctuary of Learning.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // ── Scroll Reveal System ──
+        const reveals = document.querySelectorAll('.reveal');
+        const observerOptions = {
+            threshold: 0.05,
+            rootMargin: '0px 0px -40px 0px'
+        };
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        reveals.forEach(el => revealObserver.observe(el));
+
+        // ── Navigation & Scroll Progress ──
+        const navbar = document.getElementById('navbar');
+        const progressBar = document.getElementById('progressBar');
+        
+        window.addEventListener('scroll', () => {
+            // Navigation background blur trigger
+            if (window.scrollY > 30) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            
+            // Scroll Progress Calculation
+            const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + '%';
+        }, { passive: true });
+
+        // ── Quotes Carousel Auto-rotation ──
+        const quotes = [
+            { text: "Good design is not just about making things look nice. It is about making the experience feel right.", author: "Akuri Venkata Surya Varun" },
+            { text: "Empty space on a screen is not wasted space. It helps the brain feel calm and process things better.", author: "Luma design system" },
+            { text: "Simple words and simple navigation reduce stress. Students should not have to think hard just to use the app.", author: "User Experience Guideline" },
+            { text: "Progress should feel emotional, not just mathematical. A timeline and phase system makes growth feel like an achievement.", author: "Luma evolution strategy" }
+        ];
+        let currentQuoteIndex = 0;
+        const quoteTextEl = document.getElementById('carouselQuote');
+        const quoteAuthorEl = document.getElementById('carouselAuthor');
+        
+        setInterval(() => {
+            currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+            quoteTextEl.style.opacity = 0;
+            quoteAuthorEl.style.opacity = 0;
+            
+            setTimeout(() => {
+                quoteTextEl.textContent = quotes[currentQuoteIndex].text;
+                quoteAuthorEl.textContent = quotes[currentQuoteIndex].author;
+                quoteTextEl.style.opacity = 1;
+                quoteAuthorEl.style.opacity = 1;
+            }, 400);
+        }, 6000);
+
+        // ── UI Showcase Tab Switcher ──
+        function switchScreen(index) {
+            const panels = document.querySelectorAll('.screen-panel');
+            const buttons = document.querySelectorAll('.menu-btn');
+            
+            panels.forEach(panel => {
+                panel.classList.remove('active');
+            });
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Activate target panel and button
+            panels[index].classList.add('active');
+            buttons[index].classList.add('active');
+        }
+
+        // ── Interactive Feature: Pomodoro Timer ──
+        let pomoInterval;
+        let pomoMinutes = 25;
+        let pomoSeconds = 0;
+        let pomoRunning = false;
+
+        function updatePomoDisplay() {
+            const timeStr = `${String(pomoMinutes).padStart(2, '0')}:${String(pomoSeconds).padStart(2, '0')}`;
+            document.getElementById('pomoTime').textContent = timeStr;
+        }
+
+        function togglePomodoro() {
+            const startBtn = document.getElementById('pomoStartBtn');
+            const pomoLabel = document.getElementById('pomoLabel');
+            
+            if (pomoRunning) {
+                // Pause timer
+                clearInterval(pomoInterval);
+                startBtn.textContent = 'Resume';
+                pomoLabel.textContent = 'Session Paused';
+                pomoRunning = false;
+            } else {
+                // Start timer
+                pomoRunning = true;
+                startBtn.textContent = 'Pause';
+                pomoLabel.textContent = 'Focusing...';
+                pomoInterval = setInterval(() => {
+                    if (pomoSeconds === 0) {
+                        if (pomoMinutes === 0) {
+                            clearInterval(pomoInterval);
+                            pomoLabel.textContent = 'Session Complete';
+                            alert('Focus Session complete. Time to rest.');
+                            resetPomodoro();
+                            return;
+                        }
+                        pomoMinutes--;
+                        pomoSeconds = 59;
+                    } else {
+                        pomoSeconds--;
+                    }
+                    updatePomoDisplay();
+                }, 1000);
+            }
+        }
+
+        function resetPomodoro() {
+            clearInterval(pomoInterval);
+            pomoMinutes = 25;
+            pomoSeconds = 0;
+            pomoRunning = false;
+            document.getElementById('pomoStartBtn').textContent = 'Start';
+            document.getElementById('pomoLabel').textContent = 'Focus Session';
+            updatePomoDisplay();
+        }
+
+        // ── Interactive Feature: Dashboard Checklist ──
+        function toggleChecklistItem(item, idx) {
+            const checkbox = item.querySelector('input');
+            checkbox.checked = !checkbox.checked;
+            
+            if (checkbox.checked) {
+                item.classList.add('done');
+            } else {
+                item.classList.remove('done');
+            }
+            updateChecklistCount();
+        }
+
+        function updateChecklistCount() {
+            const checkedCount = document.querySelectorAll('.checklist-item input:checked').length;
+            const totalCount = document.querySelectorAll('.checklist-item input').length;
+            document.getElementById('checklistProgress').textContent = `${checkedCount}/${totalCount} Completed`;
+        }
+
+        // ── Interactive Feature: Video Controller Simulation ──
+        let videoPlaying = false;
+        let videoTimeVal = 194; // 3:14 in seconds
+        let videoDurationVal = 760; // 12:40 in seconds
+        let videoTimerInterval;
+
+        function updateVideoProgressDisplay() {
+            const progressPercent = (videoTimeVal / videoDurationVal) * 100;
+            document.getElementById('videoTimelineFill').style.width = `${progressPercent}%`;
+            
+            const curMin = Math.floor(videoTimeVal / 60);
+            const curSec = videoTimeVal % 60;
+            const durMin = Math.floor(videoDurationVal / 60);
+            const durSec = videoDurationVal % 60;
+            
+            document.getElementById('videoProgressText').textContent = 
+                `${String(curMin).padStart(2, '0')}:${String(curSec).padStart(2, '0')} / ${String(durMin).padStart(2, '0')}:${String(durSec).padStart(2, '0')}`;
+        }
+
+        function simulateVideoToggle() {
+            const playSvg = document.getElementById('videoPlaySvg');
+            
+            if (videoPlaying) {
+                clearInterval(videoTimerInterval);
+                videoPlaying = false;
+                playSvg.innerHTML = '<polygon points="3,2 8,5 3,8" />';
+            } else {
+                videoPlaying = true;
+                playSvg.innerHTML = '<rect x="2.5" y="2" width="2" height="6" /><rect x="5.5" y="2" width="2" height="6" />';
+                videoTimerInterval = setInterval(() => {
+                    if (videoTimeVal >= videoDurationVal) {
+                        clearInterval(videoTimerInterval);
+                        videoTimeVal = 0;
+                        videoPlaying = false;
+                        playSvg.innerHTML = '<polygon points="3,2 8,5 3,8" />';
+                    } else {
+                        videoTimeVal++;
+                    }
+                    updateVideoProgressDisplay();
+                }, 1000);
+            }
+        }
+
+        function setVideoTime(timeStr, percent) {
+            const parts = timeStr.split(':');
+            videoTimeVal = parseInt(parts[0]) * 60 + parseInt(parts[1]);
+            updateVideoProgressDisplay();
+            if (!videoPlaying) {
+                simulateVideoToggle();
+            }
+        }
+
+        function scrubVideo(event) {
+            const bar = event.currentTarget;
+            const rect = bar.getBoundingClientRect();
+            const clickPosition = (event.clientX - rect.left) / rect.width;
+            videoTimeVal = Math.floor(clickPosition * videoDurationVal);
+            updateVideoProgressDisplay();
+        }
+
+        // ── Interactive Feature: Study Ledger Notes ──
+        function addLedgerNote(event) {
+            event.preventDefault();
+            const input = document.getElementById('ledgerInput');
+            const noteText = input.value.trim();
+            if (!noteText) return;
+            
+            const curMin = Math.floor(videoTimeVal / 60);
+            const curSec = videoTimeVal % 60;
+            const timeTag = `[${String(curMin).padStart(2, '0')}:${String(curSec).padStart(2, '0')}]`;
+            
+            const notesList = document.getElementById('ledgerNotesList');
+            const newNote = document.createElement('div');
+            newNote.className = 'ledger-note-item';
+            newNote.innerHTML = `<span class="ledger-note-time">${timeTag}</span>${noteText}`;
+            notesList.appendChild(newNote);
+            
+            input.value = '';
+            // auto scroll
+            notesList.scrollTop = notesList.scrollHeight;
+        }
+
+        // ── Interactive Feature: Chatbot curator simulation ──
+        function sendChatMessage(event) {
+            event.preventDefault();
+            const input = document.getElementById('chatInput');
+            const userMsgText = input.value.trim();
+            if (!userMsgText) return;
+            
+            appendChatMessage(userMsgText, 'user');
+            input.value = '';
+            
+            // Bot replies with typing effect
+            setTimeout(() => {
+                let botReply = getCuratorResponse(userMsgText);
+                appendChatMessage(botReply, 'bot');
+            }, 600);
+        }
+
+        function clickPreset(msg) {
+            appendChatMessage(msg, 'user');
+            setTimeout(() => {
+                let botReply = getCuratorResponse(msg);
+                appendChatMessage(botReply, 'bot');
+            }, 600);
+        }
+
+        function loadChatPreset(title) {
+            appendChatMessage(`Help me coordinate notes on: ${title}`, 'user');
+            setTimeout(() => {
+                let botReply = getCuratorResponse(title);
+                appendChatMessage(botReply, 'bot');
+            }, 600);
+        }
+
+        function appendChatMessage(text, sender) {
+            const chatBox = document.getElementById('chatMessages');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `chat-msg ${sender}`;
+            msgDiv.textContent = text;
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function getCuratorResponse(query) {
+            query = query.toLowerCase();
+            if (query.includes('whitespace') || query.includes('margin')) {
+                return "The core premise of whitespace in LUMA is visual breathing room. By maintaining empty margins (40-60% spatial voids), we reduce decision fatigue and allow the visual Cortex to process course outlines smoothly.";
+            } else if (query.includes('cognitive') || query.includes('stress') || query.includes('load')) {
+                return "LUMA integrates a cognitive stress indicator calculated by tracking study duration, quiz results, and streak consistency. When the indicator transitions to 'High', the curator recommends switching tabs to the ledger or taking a 5-minute Pomodoro break.";
+            } else if (query.includes('routine') || query.includes('streak')) {
+                return "Your quiet evolution routine currently stands at a 7-day streak. To sustain this flow, I recommend scheduling focused 25-minute Pomodoro periods twice daily rather than long 3-hour sessions.";
+            } else {
+                return "I've logged your query on Luma's evolution engine. The curator suggests aligning this concept with your active Phase 2 curriculum on distraction-free layout theory.";
+            }
+        }
+    </script>
+</body>
+
+</html>
